@@ -1,0 +1,38 @@
+{
+	"name": "ds_gold_dim_products",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_apple",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GOLD"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "PRD_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRD_NM",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRD_LAUNCH_DT",
+				"type": "date"
+			},
+			{
+				"name": "PRD_PRICE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "gold",
+			"table": "DIM_PRODUCTOS"
+		}
+	}
+}

@@ -1,0 +1,61 @@
+{
+	"name": "ds_gold_hechos_sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_apple",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GOLD"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID_HECHOS",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SLS_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SLS_PRD_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SLS_STR_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SLS_CAT_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SLS_WNT_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ID_FECHA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SLS_QUANTITY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SLS_UNIT_PRICE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "gold",
+			"table": "FACT_VENTAS"
+		}
+	}
+}

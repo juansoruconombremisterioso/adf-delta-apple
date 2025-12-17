@@ -1,0 +1,44 @@
+{
+	"name": "ds_gold_dim_date",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_apple",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GOLD"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID_FECHA",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FECHA",
+				"type": "date"
+			},
+			{
+				"name": "ANIO",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MES",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DIA",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "gold",
+			"table": "DIM_FECHA"
+		}
+	}
+}

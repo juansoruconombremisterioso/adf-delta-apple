@@ -1,0 +1,41 @@
+{
+	"name": "ds_gold_dim_stores",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_apple",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GOLD"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "STR_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STR_NM",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STR_CITY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STR_COUNTRY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STR_OPEN_YEAR",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "gold",
+			"table": "DIM_STORES"
+		}
+	}
+}
