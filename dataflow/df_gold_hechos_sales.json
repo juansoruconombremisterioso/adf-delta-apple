@@ -130,7 +130,7 @@
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup3",
-				"lookup3, dimwarranty lookup(ERROR_FUNCTION('') == WNT_ID,",
+				"lookup3, dimwarranty lookup(warranty_id == WNT_ID,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup4",
@@ -154,7 +154,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          SLS_ID = sale_id,",
+				"          SLS_PRD_ID = product_id,",
+				"          SLS_STR_ID = store_id,",
+				"          SLS_CAT_ID = category_id,",
+				"          SLS_WNT_ID = warranty_id,",
+				"          SLS_DATE = sale_date,",
+				"          SLS_QUANTITY = quantity,",
+				"          SLS_UNIT_PRICE = PRD_PRICE",
+				"     )) ~> sink1"
 			]
 		}
 	}
