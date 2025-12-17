@@ -30,6 +30,9 @@
 				},
 				{
 					"name": "cast1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -47,11 +50,15 @@
 				"          repair_status = trim(repair_status),",
 				"          sale_id = trim(sale_id),",
 				"          claim_date = trim(claim_date)) ~> derivedColumn1",
-				"derivedColumn1 cast(output(",
+				"derivedColumn2 cast(output(",
 				"          claim_id as integer,",
 				"          claim_date as date 'yyyy-MM-dd'",
 				"     ),",
 				"     errors: true) ~> cast1",
+				"derivedColumn1 derive(claim_date = iif(substring(claim_date, 3, 1) == '-', \r",
+				"    concat(right(claim_date, 4), '-', substring(claim_date, 4, 2), '-', left(claim_date, 2)), \r",
+				"    claim_date\r",
+				")) ~> derivedColumn2",
 				"cast1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

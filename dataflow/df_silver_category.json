@@ -39,7 +39,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
-				"source1 derive(category_id = trim(category_id),",
+				"source1 derive(category_id = substring(trim(category_id), 5),",
 				"          category_name = trim(category_name)) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
