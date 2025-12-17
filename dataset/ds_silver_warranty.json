@@ -13,7 +13,8 @@
 		"schema": [
 			{
 				"name": "claim_id",
-				"type": "varchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "claim_date",
@@ -21,11 +22,11 @@
 			},
 			{
 				"name": "sale_id",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "repair_status",
-				"type": "varchar"
+				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {

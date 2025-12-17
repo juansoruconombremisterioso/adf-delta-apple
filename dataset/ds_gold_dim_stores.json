@@ -13,7 +13,8 @@
 		"schema": [
 			{
 				"name": "STR_ID",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "STR_NM",

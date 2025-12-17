@@ -31,9 +31,8 @@
 				"precision": 10
 			},
 			{
-				"name": "DIA",
-				"type": "int",
-				"precision": 10
+				"name": "DIA_SEMANA",
+				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {

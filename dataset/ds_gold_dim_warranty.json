@@ -13,7 +13,8 @@
 		"schema": [
 			{
 				"name": "WNT_ID",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "WNT_REPAIR_STATUS",

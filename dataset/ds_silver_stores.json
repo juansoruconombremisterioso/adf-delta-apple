@@ -13,19 +13,20 @@
 		"schema": [
 			{
 				"name": "store_id",
-				"type": "varchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "store_name",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "city",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "country",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "opened_year",

@@ -13,15 +13,17 @@
 		"schema": [
 			{
 				"name": "product_id",
-				"type": "varchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "product_name",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "category_id",
-				"type": "varchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "launch_date",
@@ -30,7 +32,7 @@
 			{
 				"name": "price",
 				"type": "decimal",
-				"precision": 10,
+				"precision": 18,
 				"scale": 2
 			}
 		],

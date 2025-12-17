@@ -13,7 +13,8 @@
 		"schema": [
 			{
 				"name": "CAT_ID",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "CAT_NM",
