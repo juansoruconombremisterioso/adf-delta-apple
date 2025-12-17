@@ -33,6 +33,9 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -58,7 +61,12 @@
 				"     ),",
 				"     errors: true) ~> cast1",
 				"derivedColumn1 derive(opened_year = iif(substring(opened_year, 3, 1)==\"O\", concat(concat(left(opened_year, 2), \"0\"), right(opened_year, 1)), opened_year)) ~> derivedColumn2",
-				"cast1 sink(allowSchemaDrift: true,",
+				"cast1 aggregate(groupBy(store_id),",
+				"     store_name = first(store_name),",
+				"          city = first(city),",
+				"          country = first(country),",
+				"          opened_year = first(opened_year)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          store_id as integer,",
@@ -76,9 +84,11 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          store_id,",
 				"          store_name,",
 				"          city,",
-				"          country",
+				"          country,",
+				"          opened_year",
 				"     )) ~> sink1"
 			]
 		}

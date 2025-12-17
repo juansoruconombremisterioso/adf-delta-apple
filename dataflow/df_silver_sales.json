@@ -129,7 +129,8 @@
 				"          product_id = cast1@product_id,",
 				"          category_id,",
 				"          warranty_id = claim_id,",
-				"          quantity",
+				"          quantity,",
+				"          sale_id = source1@sale_id",
 				"     )) ~> sink1"
 			]
 		}
