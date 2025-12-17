@@ -35,6 +35,11 @@
 				"precision": 10
 			},
 			{
+				"name": "warranty_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
 				"name": "quantity",
 				"type": "int",
 				"precision": 10

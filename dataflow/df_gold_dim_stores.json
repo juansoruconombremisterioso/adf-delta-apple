@@ -6,11 +6,61 @@
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
-			"sinks": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_stores",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_gold_dim_stores",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          store_id as integer,",
+				"          store_name as string,",
+				"          city as string,",
+				"          country as string,",
+				"          opened_year as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          STR_ID as integer,",
+				"          STR_NM as string,",
+				"          STR_CITY as string,",
+				"          STR_COUNTRY as string,",
+				"          STR_OPEN_YEAR as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          STR_ID = store_id,",
+				"          STR_NM = store_name,",
+				"          STR_CITY = city,",
+				"          STR_COUNTRY = country,",
+				"          STR_OPEN_YEAR = opened_year",
+				"     )) ~> sink1"
 			]
 		}
 	}

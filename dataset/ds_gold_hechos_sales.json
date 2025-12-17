@@ -41,9 +41,8 @@
 				"precision": 10
 			},
 			{
-				"name": "ID_FECHA",
-				"type": "int",
-				"precision": 10
+				"name": "SLS_DATE",
+				"type": "date"
 			},
 			{
 				"name": "SLS_QUANTITY",

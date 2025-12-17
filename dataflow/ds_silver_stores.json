@@ -6,11 +6,80 @@
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
-			"sinks": [],
-			"transformations": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_sql_stores",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_stores",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "derivedColumn2"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          store_id as string,",
+				"          store_name as string,",
+				"          city as string,",
+				"          country as string,",
+				"          opened_year as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 derive(store_id = substring(trim(store_id), 4),",
+				"          opened_year = trim(opened_year),",
+				"          store_name = trim(store_name),",
+				"          city = trim(city),",
+				"          country = trim(country)) ~> derivedColumn1",
+				"derivedColumn2 cast(output(",
+				"          store_id as integer,",
+				"          opened_year as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"derivedColumn1 derive(opened_year = iif(substring(opened_year, 3, 1)==\"O\", concat(concat(left(opened_year, 2), \"0\"), right(opened_year, 1)), opened_year)) ~> derivedColumn2",
+				"cast1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          store_id as integer,",
+				"          store_name as string,",
+				"          city as string,",
+				"          country as string,",
+				"          opened_year as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          store_name,",
+				"          city,",
+				"          country",
+				"     )) ~> sink1"
 			]
 		}
 	}

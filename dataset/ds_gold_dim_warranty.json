@@ -17,6 +17,10 @@
 				"precision": 10
 			},
 			{
+				"name": "WNT_CLAIM_DT",
+				"type": "date"
+			},
+			{
 				"name": "WNT_REPAIR_STATUS",
 				"type": "nvarchar"
 			}

@@ -27,6 +27,12 @@
 			"transformations": [
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -42,8 +48,23 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
 				"source1 derive(product_id = substring(trim(product_id), 3),",
-				"          category_id = substring(trim(category_id), 5)) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"          category_id = substring(trim(category_id), 5),",
+				"          product_name = trim(product_name),",
+				"          launch_date = trim(launch_date),",
+				"          price = trim(price)) ~> derivedColumn1",
+				"derivedColumn2 cast(output(",
+				"          product_id as integer,",
+				"          category_id as integer,",
+				"          launch_date as date 'yyyy-MM-dd',",
+				"          price as decimal(10,0)",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"derivedColumn1 derive(launch_date = iif(\r",
+				"    length(launch_date)==9,\r",
+				"    concatWS(\"-\", concat(concat(left(launch_date, 5),\"0\"),right(launch_date, 1)), substring(launch_date, 6, 2)),\r",
+				"    launch_date\r",
+				")) ~> derivedColumn2",
+				"cast1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          product_id as integer,",
@@ -59,7 +80,14 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          product_id,",
+				"          product_name,",
+				"          category_id,",
+				"          launch_date,",
+				"          price",
+				"     )) ~> sink1"
 			]
 		}
 	}

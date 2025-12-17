@@ -33,6 +33,9 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -59,7 +62,11 @@
 				"    concat(right(claim_date, 4), '-', substring(claim_date, 4, 2), '-', left(claim_date, 2)), \r",
 				"    claim_date\r",
 				")) ~> derivedColumn2",
-				"cast1 sink(allowSchemaDrift: true,",
+				"cast1 aggregate(groupBy(claim_id),",
+				"     claim_date = first(claim_date),",
+				"          sale_id = first(sale_id),",
+				"          repair_status = first(repair_status)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          claim_id as integer,",

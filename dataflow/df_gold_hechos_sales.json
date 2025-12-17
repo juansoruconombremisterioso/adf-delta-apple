@@ -6,11 +6,155 @@
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
-			"sinks": [],
-			"transformations": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_sales",
+						"type": "DatasetReference"
+					},
+					"name": "hechos"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_gold_dim_category",
+						"type": "DatasetReference"
+					},
+					"name": "dimcategory"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_gold_dim_products",
+						"type": "DatasetReference"
+					},
+					"name": "dimproducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_gold_dim_stores",
+						"type": "DatasetReference"
+					},
+					"name": "dimstores"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_gold_dim_warranty",
+						"type": "DatasetReference"
+					},
+					"name": "dimwarranty"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_gold_hechos_sales",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "lookup2"
+				},
+				{
+					"name": "lookup3"
+				},
+				{
+					"name": "lookup4"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          sale_id as string,",
+				"          sale_date as date,",
+				"          store_id as integer,",
+				"          product_id as integer,",
+				"          category_id as integer,",
+				"          warranty_id as integer,",
+				"          quantity as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> hechos",
+				"source(output(",
+				"          CAT_ID as integer,",
+				"          CAT_NM as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimcategory",
+				"source(output(",
+				"          PRD_ID as integer,",
+				"          PRD_NM as string,",
+				"          PRD_LAUNCH_DT as date,",
+				"          PRD_PRICE as decimal(18,2)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimproducts",
+				"source(output(",
+				"          STR_ID as integer,",
+				"          STR_NM as string,",
+				"          STR_CITY as string,",
+				"          STR_COUNTRY as string,",
+				"          STR_OPEN_YEAR as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimstores",
+				"source(output(",
+				"          WNT_ID as integer,",
+				"          WNT_CLAIM_DT as date,",
+				"          WNT_REPAIR_STATUS as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimwarranty",
+				"hechos, dimcategory lookup(category_id == CAT_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1, dimproducts lookup(product_id == PRD_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup2",
+				"lookup2, dimstores lookup(store_id == STR_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup3",
+				"lookup3, dimwarranty lookup(ERROR_FUNCTION('') == WNT_ID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup4",
+				"lookup4 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID_HECHOS as integer,",
+				"          SLS_ID as string,",
+				"          SLS_PRD_ID as integer,",
+				"          SLS_STR_ID as integer,",
+				"          SLS_CAT_ID as integer,",
+				"          SLS_WNT_ID as integer,",
+				"          SLS_DATE as date,",
+				"          SLS_QUANTITY as integer,",
+				"          SLS_UNIT_PRICE as decimal(18,2)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
